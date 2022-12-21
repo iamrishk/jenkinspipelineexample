@@ -1,0 +1,61 @@
+Skip to content
+Search or jump to…
+Pull requests
+Issues
+Codespaces
+Marketplace
+Explore
+ 
+@iamrishk 
+jatinbhalla
+/
+jenkinspipelineexample
+Public
+Code
+Issues
+Pull requests
+Projects
+Security
+Insights
+jenkinspipelineexample/Jenkinsfile
+@jatinbhalla
+jatinbhalla Update Jenkinsfile
+Latest commit cf96d56 14 hours ago
+ History
+ 2 contributors
+@jatinbhalla@Govindhivrale
+39 lines (35 sloc)  755 Bytes
+
+pipeline {
+    agent any
+
+    tools {
+        maven "MAVEN"
+        jdk "JDK"
+    }
+
+    stages {
+        stage('Initialize'){
+            steps{
+                echo "PATH = ${M2_HOME}/bin:${PATH}"
+                echo "M2_HOME = /opt/maven"
+            }
+        }
+        stage('Build1') {
+            steps {
+                dir("/var/lib/jenkins/workspace/new") {
+                sh 'mvn -B -DskipTests clean package'
+                }
+            
+            }
+        }
+     }
+    post {
+       always {
+          junit(
+        allowEmptyResults: true,
+        testResults: '*/test-reports/.xml'
+      )
+      }
+   } 
+}
